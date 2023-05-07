@@ -3,6 +3,11 @@
   height: 689px;
 }
 
+body {
+  overflow: hidden;
+  height: 100%;
+}
+
 #rope0 {
   position: absolute;
   top: -5px;
@@ -12,7 +17,7 @@
 
 #rope {
   background: url("ropetile.png") repeat;
-  width: 90px;
+  width: 80px;
   height: 10px;
   transform: rotate(20deg);
   transform-origin: 0 50%;
