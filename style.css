@@ -17,7 +17,7 @@ body {
 
 #rope {
   background: url("ropetile.png") repeat;
-  width: 80px;
+  width: 90px;
   height: 10px;
   transform: rotate(20deg);
   transform-origin: 0 50%;
@@ -31,4 +31,8 @@ body {
   position: absolute;
   top: -20px;
   right: -60px;
+}
+
+.animal {
+  position: absolute;
 }
