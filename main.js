@@ -1,13 +1,21 @@
 let degree = 20;
 let direction = 1; // positive number to left, negative to right
-let height = 450;
-let width = 1200;
+let height = 550;
+let width = window.innerWidth - 150; // 100 is a margin preventing animals from going out of the screen 
 let animals = [];
+
+// get max score from local storage
+let maxScore = window.localStorage.getItem("maxScore");
+const maxScoreDisplay = document.querySelector('#max-score');
+const rope = document.querySelector("#rope");
+if (maxScore === null) {
+  maxScore = 0;
+}
+// display max score
+maxScoreDisplay.innerHTML = maxScore;
 let ropeLength = 90;
 const imageSize = 100;
-const animalNumbers = 5;
-
-const rope = document.querySelector("#rope");
+const animalNumbers = 11;
 
 let timer;
 
@@ -76,6 +84,13 @@ function lengthen(maxMumLength) {
   let left = getOffset(pliers).left - 30 * Math.sin((degree * Math.PI) / 180);
   let top = getOffset(pliers).top + 5;
 
+  // shorten if outside of the screen
+  if (left < 0 || left > width || top < 0 || top > height) {
+    clearInterval(timer);
+    timer = setInterval("shorten()", 20);
+    return;
+  }
+
   for (let i = 0; i < animals.length; i++) {
     if (
       left > animals[i][0] &&
@@ -99,14 +114,26 @@ function getOffset(element) {
     top: rect.top + scrollTop,
     left: rect.left + scrollLeft,
   };
-} // confused about this part
+} // We get x (left) and top (y) of the element; 
+// This allows to check position of an element on the screen
 
 function addScore() {
   let score = document.querySelector("#score");
   let scoreNow = parseInt(score.innerHTML);
   scoreNow += 1;
   score.innerHTML = scoreNow;
-} // parseInt? transform to the integer
+  if (scoreNow > maxScore) {
+    maxScore = scoreNow;
+    window.localStorage.setItem("maxScore", maxScore);
+    document.querySelector('#max-score').innerHTML = maxScore;
+  }
+  if (scoreNow === animalNumbers + 1) {
+    // add small delay to show the last animal
+setTimeout(function() {
+    window.location.href = "win.html";
+  }, 3000);
+  }
+} // parseInt transform to the integer
 
 function shorten(index) {
   ropeLength -= 3;
@@ -141,17 +168,33 @@ function catchAnimal() {
   if (r > len) {
     r = len;
   }
-  timer = setInterval("lengthen(" + r + ")", 20);
+  timer = setInterval("lengthen(" + r + ")", 1);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  let gameStarted = false;
   document.addEventListener("keydown", function (e) {
-    switch (e.keyCode) {
-      case 32:
-        catchAnimal();
-        break;
+if (e.keyCode === 32) {
+      catchAnimal();
+      if (gameStarted === false) {
+        startTimer();
+      }
+      gameStarted = true;
     }
   });
   createAnimal();
   timer = setInterval(swing, 20);
 });
+
+
+function startTimer() {
+  let time = 60;
+  let timer = setInterval(function () {
+    time--;
+    document.querySelector("#time").innerHTML = "Time left: " + time;
+    if (time === 0) {
+      clearInterval(timer);
+      window.location.href = "loss.html";
+    }
+  }, 1000);
+}
