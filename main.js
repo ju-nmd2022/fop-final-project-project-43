@@ -1,23 +1,23 @@
 let degree = 20;
 let direction = 1; // positive number to left, negative to right
+
 let height = 550;
-let width = window.innerWidth - 150; // 100 is a margin preventing animals from going out of the screen 
+let width = window.innerWidth - 150; // 100 is a margin preventing animals from going out of the screen
 let animals = [];
+let ropeLength = 90;
+const imageSize = 100;
+const animalNumbers = 12;
+
+let timer;
 
 // get max score from local storage
 let maxScore = window.localStorage.getItem("maxScore");
-const maxScoreDisplay = document.querySelector('#max-score');
-const rope = document.querySelector("#rope");
+const maxScoreDisplay = document.querySelector("#max-score");
 if (maxScore === null) {
   maxScore = 0;
 }
 // display max score
 maxScoreDisplay.innerHTML = maxScore;
-let ropeLength = 90;
-const imageSize = 100;
-const animalNumbers = 11;
-
-let timer;
 
 function swing() {
   degree += direction;
@@ -31,10 +31,10 @@ function swing() {
 
 function randomNum(minNum, maxNum) {
   return Math.floor(Math.random() * (maxNum - minNum + 1) + minNum);
-}
+} // get random number
 
 function createAnimal() {
-  for (let i = 0; i < animalNumbers + 1; i++) {
+  for (let i = 0; i < animalNumbers; i++) {
     let left = randomNum(10, width - imageSize);
     let top = randomNum(280, 600 - imageSize);
 
@@ -50,7 +50,7 @@ function createAnimal() {
     img.style.left = left + "px";
     document.querySelector("#container").appendChild(img);
   }
-}
+} //For example：<img src="0.png" class="animal" style="top: 346px; left: 627px;">
 
 function isOverlap(x, y) {
   // check if animal collides with other animals
@@ -69,7 +69,7 @@ function isOverlap(x, y) {
   });
 
   return isOverlap;
-}
+} // This part is get help from Karl
 
 function lengthen(maxMumLength) {
   ropeLength += 3;
@@ -77,7 +77,8 @@ function lengthen(maxMumLength) {
     clearInterval(timer);
     timer = setInterval("shorten()", 20);
     return;
-  }
+  } // For caculate the max length is combined with function"catchAnimal" below
+
   rope.style.width = ropeLength + "px";
 
   let pliers = document.querySelector("#pliers");
@@ -105,36 +106,6 @@ function lengthen(maxMumLength) {
     }
   }
 }
-
-function getOffset(element) {
-  let rect = element.getBoundingClientRect();
-  let scrollLeft = document.documentElement.scrollLeft;
-  let scrollTop = document.documentElement.scrollTop;
-  return {
-    top: rect.top + scrollTop,
-    left: rect.left + scrollLeft,
-  };
-} // We get x (left) and top (y) of the element; 
-// This allows to check position of an element on the screen
-
-function addScore() {
-  let score = document.querySelector("#score");
-  let scoreNow = parseInt(score.innerHTML);
-  scoreNow += 1;
-  score.innerHTML = scoreNow;
-  if (scoreNow > maxScore) {
-    maxScore = scoreNow;
-    window.localStorage.setItem("maxScore", maxScore);
-    document.querySelector('#max-score').innerHTML = maxScore;
-  }
-  if (scoreNow === animalNumbers + 1) {
-    // add small delay to show the last animal
-setTimeout(function() {
-    window.location.href = "win.html";
-  }, 3000);
-  }
-} // parseInt transform to the integer
-
 function shorten(index) {
   ropeLength -= 3;
   let animalItem = document.querySelectorAll(".animal");
@@ -144,10 +115,11 @@ function shorten(index) {
     if (index >= 0) {
       animalItem[index].style.display = "none";
       animals[index] = [9999, 9999];
-    }
+    } //to let the animal hide when reach the min length
     timer = setInterval("swing()", 20);
     return;
   }
+
   if (index >= 0) {
     let pliers = document.querySelector("#pliers");
     let left =
@@ -171,21 +143,51 @@ function catchAnimal() {
   timer = setInterval("lengthen(" + r + ")", 1);
 }
 
+function getOffset(element) {
+  let rect = element.getBoundingClientRect();
+  let scrollLeft = document.documentElement.scrollLeft;
+  let scrollTop = document.documentElement.scrollTop;
+  return {
+    top: rect.top + scrollTop,
+    left: rect.left + scrollLeft,
+  };
+}
+//This function is get help from a friend, is to check position of an element on the screen
+// We get x (left) and top (y) of the element.
+//So that we can successfully catching our animal, and let them moving with pliers.
+
+function addScore() {
+  let score = document.querySelector("#score");
+  let scoreNow = parseInt(score.innerHTML); // parseInt transform to the integer
+  scoreNow += 1;
+  score.innerHTML = scoreNow;
+  if (scoreNow > maxScore) {
+    maxScore = scoreNow;
+    window.localStorage.setItem("maxScore", maxScore);
+    document.querySelector("#max-score").innerHTML = maxScore;
+  } //combained with max score part above
+
+  if (scoreNow === animalNumbers) {
+    setTimeout(function () {
+      window.location.href = "win.html";
+    }, 3000); // add small delay to show the last animal
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-  let gameStarted = false;
+  let gameStarted = true;
   document.addEventListener("keydown", function (e) {
-if (e.keyCode === 32) {
+    if (e.keyCode === 32) {
       catchAnimal();
-      if (gameStarted === false) {
+      if (gameStarted === true) {
         startTimer();
       }
-      gameStarted = true;
+      gameStarted = false;
     }
   });
   createAnimal();
   timer = setInterval(swing, 20);
 });
-
 
 function startTimer() {
   let time = 60;
