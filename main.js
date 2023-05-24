@@ -180,12 +180,12 @@ function addScore() {
   let scoreNow = parseInt(score.innerHTML); // parseInt transform to the integer
   scoreNow += 1;
   score.innerHTML = scoreNow;
+  window.localStorage.setItem("currentScore", scoreNow);
   if (scoreNow > maxScore) {
     maxScore = scoreNow;
     window.localStorage.setItem("maxScore", maxScore);
     document.querySelector("#max-score").innerHTML = maxScore;
-  } //combained with max score part above
-
+  }
   if (scoreNow === animalNumbers) {
     setTimeout(function () {
       window.location.href = "win.html";
