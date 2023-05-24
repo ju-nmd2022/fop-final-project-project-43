@@ -8,6 +8,12 @@ let ropeLength = 90;
 const imageSize = 100;
 const animalNumbers = 12;
 
+// Define the object
+let myObject = {
+  name: "My Object",
+  size: 100,
+};
+
 let timer;
 
 // get max score from local storage
@@ -35,20 +41,26 @@ function randomNum(minNum, maxNum) {
 
 function createAnimal() {
   for (let i = 0; i < animalNumbers; i++) {
-    let left = randomNum(10, width - imageSize);
-    let top = randomNum(280, 600 - imageSize);
+    let left = randomNum(10, width - myObject.size);
+    let top = randomNum(280, 600 - myObject.size);
 
     while (isOverlap(left, top)) {
-      left = randomNum(10, width - imageSize);
-      top = randomNum(280, 600 - imageSize);
+      left = randomNum(10, width - myObject.size);
+      top = randomNum(280, 600 - myObject.size);
     }
     const img = document.createElement("img");
     img.src = i + ".png";
     img.classList.add("animal");
+    // （Add the object to the animals array）
+    animals.push([left, top, myObject]);
 
-    animals.push([left, top]);
+    // animals.push([left, top]);
     img.style.top = top + "px";
     img.style.left = left + "px";
+
+    //（Use object here)
+    img.style.width = myObject.size + "px";
+    img.style.height = myObject.size + "px";
 
     document.querySelector("#container").appendChild(img);
   }
@@ -169,7 +181,6 @@ function addScore() {
   scoreNow += 1;
   score.innerHTML = scoreNow;
   window.localStorage.setItem("currentScore", scoreNow);
-
   if (scoreNow > maxScore) {
     maxScore = scoreNow;
     window.localStorage.setItem("maxScore", maxScore);
