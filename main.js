@@ -5,7 +5,7 @@ let height = 550;
 let width = window.innerWidth - 150; // 100 is a margin preventing animals from going out of the screen
 let animals = [];
 let ropeLength = 90;
-const imageSize = 150;
+const imageSize = 100;
 const animalNumbers = 12;
 
 // Define the object
@@ -58,7 +58,7 @@ function createAnimal() {
     img.style.top = top + "px";
     img.style.left = left + "px";
 
-    //（ Set the width and height of the image using the object's size property）
+    //（Use object here)
     img.style.width = myObject.size + "px";
     img.style.height = myObject.size + "px";
 
@@ -83,7 +83,7 @@ function isOverlap(x, y) {
   });
 
   return isOverlap;
-} // This part is get help from Karl
+} // This part was get help from Karl
 
 function lengthen(maxMumLength) {
   ropeLength += 3;
@@ -121,19 +121,24 @@ function lengthen(maxMumLength) {
   }
 }
 function shorten(index) {
-  ropeLength -= 3;
   let animalItem = document.querySelectorAll(".animal");
 
+  if (index >= 0) {
+    ropeLength -= 2;
+  } else {
+    ropeLength -= 6;
+  }
+
   if (ropeLength <= 90) {
+    isCaught = false;
     clearInterval(timer);
     if (index >= 0) {
       animalItem[index].style.display = "none";
       animals[index] = [9999, 9999];
-    } //to let the img hide when reach the min length
-    timer = setInterval("swing()", 20);
+    }
+    timer = setInterval(swing, 20);
     return;
   }
-
   if (index >= 0) {
     let pliers = document.querySelector("#pliers");
     let left =

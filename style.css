@@ -1,9 +1,8 @@
 body {
   margin: 0;
 }
+
 #container {
-/* width: 1320px; */
-  /* height: 689px; */
   width: 100vw;
   height: 100vh;
   background-image: url("bg0.png");
@@ -14,28 +13,6 @@ body {
   top: -5px;
   left: -5px;
   width: 18px;
-}
-p, h1 {
-  font-size: 36px;
-  margin: 16px;
-  color: white;
-  font-family: "Arial", sans-serif;
-}
-
-#score, #max-score {
-  font-size: 48px;
-  margin: 16px;
-  color: white;
-  font-family: "Arial", sans-serif;
-}
-
-#score-container {
-  position: absolute;
-}
-
-#max-score-container {
-  top: 120px;
-   position: absolute;
 }
 
 #rope {
@@ -60,36 +37,127 @@ p, h1 {
   position: absolute;
 }
 
+p,
+h1 {
+  font-size: 35px;
+  margin: 20px;
+  color: white;
+  font-family: "Arial", sans-serif;
+}
+
+#score,
+#max-score {
+  font-size: 45px;
+  margin: 20px;
+  color: white;
+  font-family: "Arial", sans-serif;
+}
+
+#score-container {
+  position: absolute;
+}
+
+#max-score-container {
+  top: 120px;
+  position: absolute;
+}
+
+#time {
+  position: absolute;
+  right: 0;
+  font-size: 36px;
+  margin: 32px;
+  color: white;
+  font-family: "Arial", sans-serif;
+}
 
 #start {
-  background-image: url("bg0.png");
+  background-image: url("start\ bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
 }
 
 .start-game {
   display: flex;
   align-items: center;
-  justify-content: center;  
+  justify-content: center;
   flex-direction: column;
   height: 100vh;
 }
 
 #start-button {
   font-size: 32px;
-  background: rgb(113, 153, 177);
+  background: rgb(133, 153, 177);
   color: white;
   border-radius: 10px;
   padding: 15px;
 }
 
 #start-button:hover {
-  opacity: .5;
+  opacity: 0.5;
 }
 
-#time {
-position: absolute;
-right: 0;
-font-size: 36px;
-margin: 16px;
-color: white;
-font-family: "Arial", sans-serif;
+.text {
+  font-size: 36px;
+  margin: 16px;
+  color: rgb(255, 136, 0);
+  background-color: aliceblue;
+  font-family: "Arial", sans-serif;
+}
+
+#result {
+  background-image: url("result\ bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  position: relative;
+}
+
+.result-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gameOver {
+  font-size: 60px;
+  color: white;
+  margin-bottom: 32px;
+  font-family: "Arial", sans-serif;
+  font-weight: 600;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#scores {
+  display: flex;
+}
+
+#scores p {
+  margin: 5px;
+}
+
+.box {
+  padding: 15px;
+  background: #c78328;
+  border-radius: 54px;
+}
+
+.n1 {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 30px;
+  text-align: center;
 }
