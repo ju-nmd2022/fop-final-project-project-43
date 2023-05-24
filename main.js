@@ -5,8 +5,14 @@ let height = 550;
 let width = window.innerWidth - 150; // 100 is a margin preventing animals from going out of the screen
 let animals = [];
 let ropeLength = 90;
-const imageSize = 100;
+const imageSize = 150;
 const animalNumbers = 12;
+
+// Define the object
+let myObject = {
+  name: "My Object",
+  size: 100,
+};
 
 let timer;
 
@@ -35,19 +41,27 @@ function randomNum(minNum, maxNum) {
 
 function createAnimal() {
   for (let i = 0; i < animalNumbers; i++) {
-    let left = randomNum(10, width - imageSize);
-    let top = randomNum(280, 600 - imageSize);
+    let left = randomNum(10, width - myObject.size);
+    let top = randomNum(280, 600 - myObject.size);
 
     while (isOverlap(left, top)) {
-      left = randomNum(10, width - imageSize);
-      top = randomNum(280, 600 - imageSize);
+      left = randomNum(10, width - myObject.size);
+      top = randomNum(280, 600 - myObject.size);
     }
     const img = document.createElement("img");
     img.src = i + ".png";
     img.classList.add("animal");
-    animals.push([left, top]);
+    // （Add the object to the animals array）
+    animals.push([left, top, myObject]);
+
+    // animals.push([left, top]);
     img.style.top = top + "px";
     img.style.left = left + "px";
+
+    //（ Set the width and height of the image using the object's size property）
+    img.style.width = myObject.size + "px";
+    img.style.height = myObject.size + "px";
+
     document.querySelector("#container").appendChild(img);
   }
 } //For example：<img src="0.png" class="animal" style="top: 346px; left: 627px;">
@@ -115,7 +129,7 @@ function shorten(index) {
     if (index >= 0) {
       animalItem[index].style.display = "none";
       animals[index] = [9999, 9999];
-    } //to let the animal hide when reach the min length
+    } //to let the img hide when reach the min length
     timer = setInterval("swing()", 20);
     return;
   }
