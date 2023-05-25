@@ -1,6 +1,6 @@
 let degree = 20;
 let direction = 1; // positive number to left, negative to right
-
+let isCaught = false;
 let height = 550;
 let width = window.innerWidth - 150; // 100 is a margin preventing animals from going out of the screen
 let animals = [];
@@ -115,7 +115,7 @@ function lengthen(maxMumLength) {
     ) {
       clearInterval(timer);
       timer = setInterval("shorten(" + i + ")", 20);
-      addScore();
+      isCaught = true;
       return;
     }
   }
@@ -135,6 +135,7 @@ function shorten(index) {
     if (index >= 0) {
       animalItem[index].style.display = "none";
       animals[index] = [9999, 9999];
+      addScore();
     }
     timer = setInterval(swing, 20);
     return;
@@ -196,7 +197,7 @@ function addScore() {
 document.addEventListener("DOMContentLoaded", function () {
   let gameStarted = true;
   document.addEventListener("keydown", function (e) {
-    if (e.keyCode === 32) {
+    if (e.keyCode === 32 && !isCaught) {
       catchAnimal();
       if (gameStarted === true) {
         startTimer();

@@ -2,6 +2,7 @@ let degree = 20;
 let direction = 1; // positive number to left, negative to right
 
 let height = 550;
+let isCaught = false;
 let width = window.innerWidth - 150; // 100 is a margin preventing animals from going out of the screen
 let animals = [];
 let ropeLength = 90;
@@ -46,7 +47,7 @@ function createAnimal() {
     img.src = i + ".png";
     img.classList.add("animal");
 
-    animals.push([left, top]);
+    animals.push([left, top]); // push img x,y into animal array
     img.style.top = top + "px";
     img.style.left = left + "px";
 
@@ -72,6 +73,23 @@ function isOverlap(x, y) {
 
   return isOverlap;
 } // This part was get help from Karl
+function addScore() {
+  let score = document.querySelector("#score");
+  let scoreNow = parseInt(score.innerHTML); // parseInt transform to the integer
+  scoreNow += 1;
+  score.innerHTML = scoreNow;
+  window.localStorage.setItem("currentScore", scoreNow);
+  if (scoreNow > maxScore) {
+    maxScore = scoreNow;
+    window.localStorage.setItem("maxScore", maxScore);
+    document.querySelector("#max-score").innerHTML = maxScore;
+  }
+  if (scoreNow === animalNumbers) {
+    setTimeout(function () {
+      window.location.href = "win.html";
+    }, 3000); // add small delay to show after catching the last animal
+  }
+}
 
 function lengthen(maxMumLength) {
   ropeLength += 3;
@@ -102,12 +120,15 @@ function lengthen(maxMumLength) {
       top < animals[i][1] + imageSize
     ) {
       clearInterval(timer);
+      isCaught = true;
       timer = setInterval("shorten(" + i + ")", 20);
-      addScore();
+
+      console.log("hello");
       return;
     }
   }
 }
+
 function shorten(index) {
   let animalItem = document.querySelectorAll(".animal");
 
@@ -123,6 +144,7 @@ function shorten(index) {
     if (index >= 0) {
       animalItem[index].style.display = "none";
       animals[index] = [9999, 9999];
+      addScore();
     }
     timer = setInterval(swing, 20);
     return;
@@ -163,29 +185,10 @@ function getOffset(element) {
 // We get x (left) and top (y) of the element.
 //So that we can successfully catching our animal, and let them moving with pliers.
 
-function addScore() {
-  let score = document.querySelector("#score");
-  let scoreNow = parseInt(score.innerHTML); // parseInt transform to the integer
-  scoreNow += 1;
-  score.innerHTML = scoreNow;
-  window.localStorage.setItem("currentScore", scoreNow);
-
-  if (scoreNow > maxScore) {
-    maxScore = scoreNow;
-    window.localStorage.setItem("maxScore", maxScore);
-    document.querySelector("#max-score").innerHTML = maxScore;
-  }
-  if (scoreNow === animalNumbers) {
-    setTimeout(function () {
-      window.location.href = "win.html";
-    }, 3000); // add small delay to show the last animal
-  }
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   let gameStarted = true;
   document.addEventListener("keydown", function (e) {
-    if (e.keyCode === 32) {
+    if (e.keyCode === 32 && !isCaught) {
       catchAnimal();
       if (gameStarted === true) {
         startTimer();
@@ -208,3 +211,12 @@ function startTimer() {
     }
   }, 1000);
 }
+
+// The coding was get idea and background image from this web:
+//https://www.bilibili.com/video/BV1bx4y1P7kY/?spm_id_from=333.337.search-card.all.click&vd_source=108732e66ea4d2cef361d78ab79d1795
+// Especially the chain animation part, and the angle with lenghthen and shorten part, they are all get inspireation from that
+
+// In order to make sure it works, I didn't change code from the pliers part, for example catchAnimal function(line 42- 51)
+// Also didn't change all the stuffs about sin and cos part, for example: line 86,87
+
+// The animal image
