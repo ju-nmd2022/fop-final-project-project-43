@@ -1,0 +1,169 @@
+body {
+  margin: 0;
+}
+
+#container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("bg.png");
+}
+
+#rope0 {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 18px;
+}
+
+#rope {
+  background: url("ropetile.png") repeat;
+  width: 90px;
+  height: 10px;
+  transform: rotate(20deg);
+  transform-origin: 0 50%;
+  position: fixed;
+  top: 156px;
+  left: 662px;
+}
+
+#pliers {
+  transform: rotate(-90deg);
+  position: absolute;
+  top: -20px;
+  right: -60px;
+}
+
+.animal {
+  position: absolute;
+}
+
+p,
+h1 {
+  font-size: 35px;
+  margin: 20px;
+  color: white;
+  font-family: "Arial", sans-serif;
+}
+
+#score,
+#max-score {
+  font-size: 45px;
+  margin: 20px;
+  color: white;
+  font-family: "Arial", sans-serif;
+}
+
+#score-container {
+  position: absolute;
+}
+
+#max-score-container {
+  top: 120px;
+  position: absolute;
+}
+
+#time {
+  position: absolute;
+  right: 0;
+  font-size: 36px;
+  margin: 32px;
+  color: white;
+  font-family: "Arial", sans-serif;
+}
+
+#start {
+  background-image: url("start\ bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.start-game {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#start-button {
+  font-size: 32px;
+  background: rgb(133, 153, 177);
+  color: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 1rem;
+}
+
+#start-button:hover {
+  opacity: 0.5;
+}
+
+.text {
+  font-size: 36px;
+  margin: 16px;
+  color: rgb(255, 136, 0);
+  background-color: aliceblue;
+  font-family: "Arial", sans-serif;
+}
+
+#result {
+  background-image: url("result\ bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  position: relative;
+}
+
+.result-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gameOver {
+  font-size: 60px;
+  color: white;
+  margin-bottom: 32px;
+  font-family: "Arial", sans-serif;
+  font-weight: 600;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  background: #c78328;
+  border-radius: 54px;
+}
+
+#scores {
+  display: flex;
+}
+
+#scores p {
+  margin: 5px;
+}
+
+.n1 {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 60px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.win {
+  font-size: 50px;
+  font-weight: 550;
+  line-height: 50px;
+  text-align: center;
+  color: #ffffff;
+}
