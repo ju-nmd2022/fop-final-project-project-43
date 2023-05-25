@@ -1,12 +1,14 @@
 let degree = 20;
 let direction = 1;
-let isCaught = false;
 let height = 550;
+let isCaught = false;
 let width = window.innerWidth - 150;
 let animals = [];
 let ropeLength = 90;
 const imageSize = 100;
 const animalNumbers = 12;
+
+let timer;
 
 // Define the object
 let myObject = {
@@ -14,12 +16,7 @@ let myObject = {
   size: 100,
 };
 
-let timer;
-
-// Clean up previous max score from local storage
-window.localStorage.removeItem("maxScore");
-
-// Get max score from local storage
+// get max score from local storage
 let maxScore = JSON.parse(window.localStorage.getItem("maxScore"));
 const maxScoreDisplay = document.querySelector("#max-score");
 
@@ -46,17 +43,18 @@ function randomNum(minNum, maxNum) {
 
 function createAnimal() {
   for (let i = 0; i < animalNumbers; i++) {
-    let left = randomNum(10, width - myObject.size);
-    let top = randomNum(280, 600 - myObject.size);
+    let left = randomNum(10, width - imageSize);
+    let top = randomNum(280, 600 - imageSize);
 
     while (isOverlap(left, top)) {
-      left = randomNum(10, width - myObject.size);
-      top = randomNum(280, 600 - myObject.size);
+      left = randomNum(10, width - imageSize);
+      top = randomNum(280, 600 - imageSize);
     }
     const img = document.createElement("img");
     img.src = i + ".png";
     img.classList.add("animal");
-    // （Add the object to the animals array）
+
+    //（Add the object to the animals array）
     animals.push([left, top, myObject]);
 
     img.style.top = top + "px";
@@ -71,7 +69,6 @@ function createAnimal() {
 }
 
 function isOverlap(x, y) {
-  // check if animal collides with other animals
   let isOverlap = false;
   document.querySelectorAll(".animal").forEach((animal) => {
     const animalLeft = parseInt(animal.style.left);
@@ -89,9 +86,9 @@ function isOverlap(x, y) {
   return isOverlap;
 }
 
-function lengthen(maxMumLength) {
+function lengthen(r) {
   ropeLength += 3;
-  if (ropeLength >= maxMumLength) {
+  if (ropeLength >= r) {
     clearInterval(timer);
     timer = setInterval("shorten()", 20);
     return;
@@ -103,7 +100,6 @@ function lengthen(maxMumLength) {
   let left = getOffset(pliers).left - 30 * Math.sin((degree * Math.PI) / 180);
   let top = getOffset(pliers).top + 5;
 
-  // shorten if outside of the screen
   if (left < 0 || left > width || top < 0 || top > height) {
     clearInterval(timer);
     timer = setInterval("shorten()", 20);
@@ -118,12 +114,12 @@ function lengthen(maxMumLength) {
       top < animals[i][1] + imageSize
     ) {
       clearInterval(timer);
-      timer = setInterval("shorten(" + i + ")", 20);
       isCaught = true;
-      return;
+      timer = setInterval("shorten(" + i + ")", 20);
     }
   }
 }
+
 function shorten(index) {
   let animalItem = document.querySelectorAll(".animal");
 
@@ -144,6 +140,7 @@ function shorten(index) {
     timer = setInterval(swing, 20);
     return;
   }
+
   if (index >= 0) {
     let pliers = document.querySelector("#pliers");
     let left =
@@ -159,7 +156,7 @@ function shorten(index) {
 function catchAnimal() {
   clearInterval(timer);
   let arc = (degree * Math.PI) / 180;
-  let r = height / Math.sin(arc);
+  let r = height / Math.sin(arc); //maximum length
   let len = Math.abs(width / Math.cos(arc));
   if (r > len) {
     r = len;
@@ -177,24 +174,6 @@ function getOffset(element) {
   };
 }
 
-function addScore() {
-  let score = document.querySelector("#score");
-  let scoreNow = parseInt(score.innerHTML);
-  scoreNow += 1;
-  score.innerHTML = scoreNow;
-  window.localStorage.setItem("currentScore", scoreNow);
-  if (scoreNow > maxScore) {
-    maxScore = scoreNow;
-    window.localStorage.setItem("maxScore", maxScore);
-    document.querySelector("#max-score").innerHTML = maxScore;
-  }
-  if (scoreNow === animalNumbers) {
-    setTimeout(function () {
-      window.location.href = "win.html";
-    }, 3000);
-  }
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   let gameStarted = true;
   document.addEventListener("keydown", function (e) {
@@ -209,6 +188,26 @@ document.addEventListener("DOMContentLoaded", function () {
   createAnimal();
   timer = setInterval(swing, 20);
 });
+
+function addScore() {
+  let score = document.querySelector("#score");
+  let scoreNow = parseInt(score.innerHTML);
+  scoreNow += 1;
+  score.innerHTML = scoreNow;
+  window.localStorage.setItem("currentScore", JSON.stringify(scoreNow));
+
+  if (scoreNow > maxScore) {
+    maxScore = scoreNow;
+    window.localStorage.setItem("maxScore", JSON.stringify(maxScore));
+    document.querySelector("#max-score").innerHTML = maxScore;
+  }
+
+  if (scoreNow === animalNumbers) {
+    setTimeout(function () {
+      window.location.href = "win.html";
+    }, 3000);
+  }
+}
 
 function startTimer() {
   let time = 60;
