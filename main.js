@@ -1,6 +1,5 @@
 let degree = 20;
 let direction = 1; // positive number to left, negative to right
-
 let height = 550;
 let isCaught = false;
 let width = window.innerWidth - 150; // 100 is a margin preventing animals from going out of the screen
@@ -11,14 +10,19 @@ const animalNumbers = 12;
 
 let timer;
 
-// get max score from local storage
-let maxScore = window.localStorage.getItem("maxScore");
+// Clean up previous max score from local storage
+window.localStorage.removeItem("maxScore");
+
+// Get max score from local storage
+let maxScore = JSON.parse(window.localStorage.getItem("maxScore"));
 const maxScoreDisplay = document.querySelector("#max-score");
+
 if (maxScore === null) {
   maxScore = 0;
 }
-// display max score
-maxScoreDisplay.innerHTML = maxScore;
+
+// Display max score
+maxScoreDisplay.innerHTML = JSON.stringify(maxScore);
 
 function swing() {
   degree += direction;
@@ -32,7 +36,7 @@ function swing() {
 
 function randomNum(minNum, maxNum) {
   return Math.floor(Math.random() * (maxNum - minNum + 1) + minNum);
-} // get random number
+} // get random number for img position
 
 function createAnimal() {
   for (let i = 0; i < animalNumbers; i++) {
@@ -183,12 +187,14 @@ function getOffset(element) {
 }
 //This function is get help from a friend, is to check position of an element on the screen
 // We get x (left) and top (y) of the element.
-//So that we can successfully catching our animal, and let them moving with pliers.
+// Taking into account any scrolling that may have occurred.
 
 document.addEventListener("DOMContentLoaded", function () {
   let gameStarted = true;
   document.addEventListener("keydown", function (e) {
     if (e.keyCode === 32 && !isCaught) {
+      // "!isCaught" evaluates to the boolean value true if isCaught is false
+      //and it evaluates to false if isCaught is true. (Got help from Niklas)
       catchAnimal();
       if (gameStarted === true) {
         startTimer();
@@ -212,11 +218,12 @@ function startTimer() {
   }, 1000);
 }
 
-// The coding was get idea and background image from this web:
-//https://www.bilibili.com/video/BV1bx4y1P7kY/?spm_id_from=333.337.search-card.all.click&vd_source=108732e66ea4d2cef361d78ab79d1795
-// Especially the chain animation part, and the angle with lenghthen and shorten part, they are all get inspireation from that
+// The coding was get idea and images for pliers element from this web:
+// https://www.bilibili.com/video/BV1bx4y1P7kY/?spm_id_from=333.337.search-card.all.click&vd_source=108732e66ea4d2cef361d78ab79d1795
 
-// In order to make sure it works, I didn't change code from the pliers part, for example catchAnimal function(line 42- 51)
+// Especially the rope animation part, and the angle with lenghthen and shorten part, they are all get datas from this video
+
+// In order to make sure code working, I didn't change code from the pliers part, for example catchAnimal function(line 42- 51)
 // Also didn't change all the stuffs about sin and cos part, for example: line 86,87
 
-// The animal image
+// The animal image from here：https://zh.pngtree.com/freepng/cartoon-animal-lion-king_3727158.html
